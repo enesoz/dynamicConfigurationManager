@@ -6,14 +6,17 @@ import org.springframework.web.context.annotation.ApplicationScope;
 import javax.inject.Singleton;
 
 @Singleton
-@ApplicationScope
 public class ConfigurationReader {
 
-    private static ManagerConfiguration managerConfiguration;
+    public static ManagerConfiguration managerConfiguration;
 
     public ConfigurationReader(String applicationName, String connectionString, int refreshTimerIntervalInMs) {
-        super();
-        this.managerConfiguration = managerConfiguration;
+        this.managerConfiguration = new ManagerConfiguration(applicationName, connectionString, refreshTimerIntervalInMs);
     }
+
+    public ManagerConfiguration getManagerConfiguration() {
+        return managerConfiguration;
+    }
+
 
 }

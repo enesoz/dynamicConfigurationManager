@@ -13,9 +13,9 @@ import java.util.List;
 @Transactional
 public interface ConfigurationRepository extends MongoRepository<ConfigurationEntity, Long> {
     @Cacheable(cacheNames = "gellALLActiveByAppname")
-    List getAllByAppNameAndActiveIsTrue();
+    List getAllByAppNameAndActiveIsTrue(String appName);
 
     @Cacheable(cacheNames = "getConfigurationByName")
-    List getConfigurationEntitiesByAppNameAndNameAndActiveIsTrue();
+    ConfigurationEntity getConfigurationEntityByAppNameAndNameAndActiveIsTrue(String appName, String name);
 
 }
