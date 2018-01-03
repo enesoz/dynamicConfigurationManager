@@ -3,6 +3,7 @@ package dynamic.configuration.manager.app;
 import dynamic.configuration.manager.entity.ManagerConfiguration;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.ApplicationScope;
 
@@ -27,10 +28,16 @@ public class ConfigurationReader {
         this.managerConfiguration = new ManagerConfiguration(applicationName, connectionString, refreshTimerIntervalInMs);
     }
 
-    @PostConstruct
-    private void init() {
-        logger.info("Application starting");
-        SpringApplication.run(ManagerApplication.class, args);
+
+    public boolean start() {
+        try {
+            logger.info("Application starting");
+            ConfigurableApplicationContext run = SpringApplication.run(ManagerApplication.class, args);
+            return run.isActive();
+        } catch (Exception e) {
+            logger.error("Error Occured", e.fillInStackTrace());
+        }
+        return false;
     }
 
     public static ConfigurationReader build(String applicationName, String connectionString, int refreshTimerIntervalInMs) {

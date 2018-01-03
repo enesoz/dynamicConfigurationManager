@@ -6,9 +6,8 @@ import dynamic.configuration.manager.repository.ConfigurationRepository;
 import dynamic.configuration.manager.service.ConfigurationService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Configuration;
@@ -18,7 +17,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
-@Path("/config")
+@RequestMapping("/config")
 @CrossOrigin("*")
 public class ConfigurationController {
 
@@ -27,54 +26,57 @@ public class ConfigurationController {
     @Autowired
     ConfigurationService service;
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index() {
+        return "index";
+    }
 
-    @PUT
-    @Path("/add")
-    @Produces(value = MediaType.APPLICATION_JSON)
-    @Consumes(value = MediaType.APPLICATION_JSON)
-    public Response addConfiguration(@RequestBody ConfigurationEntity entity) {
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String addConfiguration(@RequestBody ConfigurationEntity entity) {
         try {
             service.add(entity);
         } catch (Exception e) {
-            return Response.serverError().entity(entity).build();
+            return "error";
         }
-        return Response.ok().entity("Operation Done").build();
+        return "redirect:index";
     }
 
-    @POST
-    @Path("/update")
-    @Produces(value = MediaType.APPLICATION_JSON)
-    @Consumes(value = MediaType.APPLICATION_JSON)
-    public Response updateConfiguration(@RequestBody ConfigurationEntity entity) {
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateConfiguration(@RequestBody ConfigurationEntity entity) {
         try {
             service.update(entity);
         } catch (Exception e) {
-            return Response.serverError().entity(entity).build();
+            return "redirect:error.html";
         }
-        return Response.ok().entity("Operation Done").build();
+        return "redirect:index";
     }
 
     @DELETE
-    @Path("/delete/{id}")
-    public Response deleteConfiguration(@PathParam("id") long id) {
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public String deleteConfiguration(@RequestParam("id") Long id) {
         try {
             service.deleteById(id);
         } catch (Exception e) {
-            return Response.serverError().build();
+            return new Long(-1L).toString();
         }
-        return Response.ok().entity("Operation Done").build();
+        return id.toString();
     }
 
     @GET
     @Path("/getAll")
-    @Produces(value = MediaType.APPLICATION_JSON)
-    public List getAllConfigurations() {
-        return service.getConfigurations();
+    @ResponseBody
+    public String getAllConfigurations(Model model) {
+        model.addAttribute("configEntities", service.getConfigurations());
+        return "index";
     }
 
     @GET
     @Path("/getByName/{name}")
-    public ConfigurationEntity getByName(@PathParam("name") String name) {
-        return service.getByName(name);
+    @ResponseBody
+    public String getByName(@PathParam("name") String name, Model model) {
+        model.addAttribute("configEntity", service.getByName(name));
+        return "/configEntity";
     }
 }

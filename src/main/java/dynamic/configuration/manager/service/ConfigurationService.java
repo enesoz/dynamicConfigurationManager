@@ -21,17 +21,16 @@ public class ConfigurationService {
     @Autowired
     ConfigurationReader configurationReader;
 
-    @Cacheable(value = "entity", key = "#id")
+    @Cacheable(cacheNames = "getConfigurationByName")
     public ConfigurationEntity getByName(String name) {
         return repository.getConfigurationEntityByAppNameAndNameAndActiveIsTrue(configurationReader.getManagerConfiguration().getApplicationName(), name);
     }
-
     @Cacheable(cacheNames = "entities")
     public List getConfigurations() {
         return repository.getAllByAppNameAndActiveIsTrue(configurationReader.getManagerConfiguration().getApplicationName());
     }
 
-    @CachePut(value = "entity", key = "#id")
+    @CachePut(value = "entity"  ,key = "#id")
     public void add(ConfigurationEntity entity) {
         try {
             repository.save(entity);
@@ -42,7 +41,7 @@ public class ConfigurationService {
         }
     }
 
-    @CachePut(value = "entity", key = "#id")
+    @CachePut(value = "entity"  ,key = "#id")
     public void update(ConfigurationEntity entity) {
         try {
             repository.save(entity);
