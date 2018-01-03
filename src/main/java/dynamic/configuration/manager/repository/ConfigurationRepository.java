@@ -12,10 +12,9 @@ import java.util.List;
 @Repository
 @Transactional
 public interface ConfigurationRepository extends MongoRepository<ConfigurationEntity, Long> {
-    @Cacheable(cacheNames = "gellALLActiveByAppname")
+
     List getAllByAppNameAndActiveIsTrue(String appName);
 
-    @Cacheable(cacheNames = "getConfigurationByName")
     ConfigurationEntity getConfigurationEntityByAppNameAndNameAndActiveIsTrue(String appName, String name);
 
 }

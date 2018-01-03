@@ -5,6 +5,9 @@ import dynamic.configuration.manager.entity.ConfigurationEntity;
 import dynamic.configuration.manager.repository.ConfigurationRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
@@ -18,20 +21,17 @@ public class ConfigurationService {
     @Autowired
     ConfigurationReader configurationReader;
 
-
+    @Cacheable(value = "entity", key = "#id")
     public ConfigurationEntity getByName(String name) {
         return repository.getConfigurationEntityByAppNameAndNameAndActiveIsTrue(configurationReader.getManagerConfiguration().getApplicationName(), name);
     }
 
+    @Cacheable(cacheNames = "entities")
     public List getConfigurations() {
         return repository.getAllByAppNameAndActiveIsTrue(configurationReader.getManagerConfiguration().getApplicationName());
     }
 
-    public ConfigurationRepository getRepository() {
-        return repository;
-    }
-
-
+    @CachePut(value = "entity", key = "#id")
     public void add(ConfigurationEntity entity) {
         try {
             repository.save(entity);
@@ -42,7 +42,7 @@ public class ConfigurationService {
         }
     }
 
-
+    @CachePut(value = "entity", key = "#id")
     public void update(ConfigurationEntity entity) {
         try {
             repository.save(entity);
@@ -53,7 +53,7 @@ public class ConfigurationService {
         }
     }
 
-
+    @CacheEvict(value = "post-single", key = "#id")
     public void deleteById(long id) {
         try {
             repository.deleteById(id);
