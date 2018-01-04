@@ -13,8 +13,10 @@ import java.util.List;
 @Transactional
 public interface ConfigurationRepository extends MongoRepository<ConfigurationEntity, Long> {
 
-    List getAllByAppNameAndActiveIsTrue(String appName);
+	List getAllByAppNameAndActiveIsTrue(String appName);
 
-    ConfigurationEntity getConfigurationEntityByAppNameAndNameAndActiveIsTrue(String appName, String name);
+	ConfigurationEntity getConfigurationEntityByAppNameAndNameAndActiveIsTrue(String appName, String name);
+
+	ConfigurationEntity findOne(String name);
 
 }

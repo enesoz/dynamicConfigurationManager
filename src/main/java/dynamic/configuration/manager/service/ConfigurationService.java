@@ -62,4 +62,8 @@ public class ConfigurationService {
             throw e;
         }
     }
+	public ConfigurationRepository getRepository() {
+		return repository;
+	}
+    
 }

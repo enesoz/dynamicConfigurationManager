@@ -26,38 +26,30 @@
 	<div class="container">
 		<div class="page-header" id="banner">
 			<div class="row">
-				<div class="col-lg-8 col-md-7 col-sm-6">
-					<form>
-						<div class="form-group">
-							<label for="conf_name">Name:</label> <input type="text"
-								class="form-control" id="conf_name" />
-						</div>
-						<div class="form-group blu-margin">
-							<label for="conf_type">Type:</label> <select class="form-control"
-								id="conf_type">
-								<option value="0">Select One</option>
-								<option value="String">String</option>
-								<option value="Integer">Integer</option>
-								<option value="Double">Double</option>
-								<option value="Boolean">Boolean</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="conf_value">Value:</label> <input type="text"
-								class="form-control" id="conf_value" />
-						</div>
-						<div class="form-group">
-							<label for="conf_active">IsActive:</label> <input type="checkbox"
-								class="form-control input-lg" id="conf_active" />
-						</div>
-						<div class="form-group">
-							<label for="conf_value">Application Name:</label> <input
-								type="text" class="form-control" id="conf_appName" />
-						</div>
-						<button type="submit" class="btn btn-default" id="btn_submit">Add</button>
+				<h1>Configuration</h1>
+				<div class="col-md-4">
+					<form th:action="@{../add}" th:object="${config}" action="#"
+						method="post">
+						<input type="text" th:field="*{config.name}" class="form-control"
+							placeholder="Name" />
+						<div style="clear: both; display: block; height: 10px;"></div>
+						<input type="text" th:field="*{config.type}" class="form-control"
+							placeholder="Type" />
+						<div style="clear: both; display: block; height: 10px;"></div>
+						<input type="text" th:field="*{config.value}" class="form-control"
+							placeholder="Value" />
+						<div style="clear: both; display: block; height: 10px;"></div>
+						<input type="checkbox" th:field="*{config.active}" class="form-control"
+							placeholder="Active" />
+						<div style="clear: both; display: block; height: 10px;"></div>
+						<input type="checkbox" th:field="*{config.appName}" class="form-control"
+							placeholder="ApplicationName" />
+						<div style="clear: both; display: block; height: 10px;"></div>
+						<input type="submit" class="btn btn-primary" value="Save"></input>
 					</form>
 				</div>
 			</div>
+			<br /> <br />
 			<div class="row">
 				<div class="col-lg-8 col-md-7 col-sm-6">
 					<h1>Configurations</h1>
@@ -65,7 +57,7 @@
 					<table class="table table-striped table-hover">
 						<thead>
 							<tr>
-								<th>Id</th>
+								<th>ID</th>
 								<th>Name</th>
 								<th>Type</th>
 								<th>Value</th>
@@ -75,14 +67,18 @@
 						</thead>
 						<tbody>
 
-							<!--/*@thymesVar id="configEntities" type="dynamic.configuration.manager.entity.ConfigurationEntity"*/-->
-							<tr th:each="product : ${configEntities}">
-								<td th:text="${configEntities.id}"></td>
-								<td th:text="${configEntities.name}"></td>
-								<td th:text="${configEntities.type}"></td>
-								<td th:text="${configEntities.value}"></td>
-								<td th:checkbox="${configEntities.active}"></td>
+							<tr th:each="configEntity : ${configEntities}">
+								<td th:text="${configEntity.id}"></td>
+								<td th:text="${configEntity.name}"></td>
+								<td th:text="${configEntity.type}"></td>
+								<td th:text="${configEntity.value}"></td>
+								<td th:checkbox="${configEntity.active}"></td>
 								<td th:text="${configEntities.appName}"></td>
+								<td><button type="button" th:action="@{../update}"
+										class="btn btn-success custom-width">Edit</button></td>
+								<td><button type="button"
+										th:action="@{../delete/{id}(id=${configEntity.id}))}"
+										class="btn btn-danger custom-width">Remove</button></td>
 							</tr>
 						</tbody>
 					</table>
@@ -97,16 +93,7 @@
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 		
 		
     $(document).ready(function () {
@@ -157,6 +144,21 @@
         });
     });
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
