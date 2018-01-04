@@ -1,103 +1,154 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Products</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="/bootstrap.min.css" media="screen"/>
-    <style>
-        .navigation-order {
-            margin-bottom: 30px;
-        }
-    </style>
+<title>Configuration Manager</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<style>
+.navigation-order {
+	margin-bottom: 30px;
+}
+
+.navbar-default {
+	background: #6db33f;
+}
+
+.navbar-default .navbar-brand {
+	color: white;
+}
+
+.navbar-default .navbar-nav>li>a {
+	color: white;
+}
+</style>
 </head>
 <body>
-<div class="container">
-    <div class="page-header" id="banner">
-        <div class="row">
-            <div class="col-lg-8 col-md-7 col-sm-6">
-                <form>
-                    <div class="form-group">
-                        <label for="conf_name">Configuration Name:</label>
-                        <input type="text" class="form-control" id="conf_name"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="conf_type">Configuration Type</label>
-                        <input type="text" class="form-control" id="conf_type"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="conf_value">Configuration Value</label>
-                        <input type="text" class="form-control" id="conf_value"/>
-                    </div>
-                    <button type="submit" class="btn btn-default" id="btn_submit">Add New Product</button>
-                </form>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-8 col-md-7 col-sm-6">
-                <h1>Configurations</h1>
+	<div class="container">
+		<div class="page-header" id="banner">
+			<div class="row">
+				<div class="col-lg-8 col-md-7 col-sm-6">
+					<form>
+						<div class="form-group">
+							<label for="conf_name">Name:</label> <input type="text"
+								class="form-control" id="conf_name" />
+						</div>
+						<div class="form-group blu-margin">
+							<label for="conf_type">Type:</label> <select class="form-control"
+								id="conf_type">
+								<option value="0">Select One</option>
+								<option value="String">String</option>
+								<option value="Integer">Integer</option>
+								<option value="Double">Double</option>
+								<option value="Boolean">Boolean</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="conf_value">Value:</label> <input type="text"
+								class="form-control" id="conf_value" />
+						</div>
+						<div class="form-group">
+							<label for="conf_active">IsActive:</label> <input type="checkbox"
+								class="form-control input-lg" id="conf_active" />
+						</div>
+						<div class="form-group">
+							<label for="conf_value">Application Name:</label> <input
+								type="text" class="form-control" id="conf_appName" />
+						</div>
+						<button type="submit" class="btn btn-default" id="btn_submit">Add</button>
+					</form>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-8 col-md-7 col-sm-6">
+					<h1>Configurations</h1>
 
-                <table class="table table-striped table-hover">
-                    <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Value</th>
-                        <th>IsActive</th>
-                        <th>Application Name</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+					<table class="table table-striped table-hover">
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Value</th>
+								<th>IsActive</th>
+								<th>Application Name</th>
+							</tr>
+						</thead>
+						<tbody>
 
-                    <!--/*@thymesVar id="configEntities" type="dynamic.configuration.manager.entity.ConfigurationEntity"*/-->
-                    <tr th:each="product : ${configEntities}">
-                        <td th:text="${configEntities.id}"></td>
-                        <td th:text="${configEntities.name}"></td>
-                        <td th:text="${configEntities.type}"></td>
-                        <td th:text="${configEntities.value}"></td>
-                        <td th:text="${configEntities.active}"></td>
-                        <td th:text="${configEntities.appName}"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+							<!--/*@thymesVar id="configEntities" type="dynamic.configuration.manager.entity.ConfigurationEntity"*/-->
+							<tr th:each="product : ${configEntities}">
+								<td th:text="${configEntities.id}"></td>
+								<td th:text="${configEntities.name}"></td>
+								<td th:text="${configEntities.type}"></td>
+								<td th:text="${configEntities.value}"></td>
+								<td th:checkbox="${configEntities.active}"></td>
+								<td th:text="${configEntities.appName}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<br />
 
-        <br/>
-        <div class="row navigation-order">
-            <div class="col-lg-8 col-md-7 col-sm-6">
-                <a href="/orders">Click here to go to Customer Order Management</a>
-            </div>
-        </div>
-    </div>
-</div>
-<script src="/jquery.js" type="application/javascript"></script>
-<script type="application/javascript">
+		</div>
+	</div>
+	<script src="js/jquery.js" type="application/javascript"></script>
+	<script type="application/javascript">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
     $(document).ready(function () {
         $('#btn_submit').on("click", function (e) {
             e.preventDefault();
-            var productName, productPrice;
-            productName = $('#product_name').val();
-            productPrice = $('#product_price').val();
-            if ($.trim(productName) === "") {
-                alert("Product name cannot be empty");
+            var configName, configType,configValue,configActive,configAppName;
+            configName = $('#conf_name').val();
+            configType = $('#conf_type').val();
+            configValue = $('#conf_value').val();
+            configActive =$('#conf_value').val();
+            configAppName = $('#conf_appName')
+            if ($.trim(configName) === "") {
+                alert("Config name cannot be empty");
             }
-            else if (!$.trim($.isNumeric(productPrice))) {
-                alert("Price must be numeric");
+            if ($.trim(configType) === "") {
+                alert("Config type must be selected");
+            }
+            if ($.trim(configValue) === "") {
+                alert("Config value cannot be empty");
+            }
+            if ($.trim(configAppName) === "") {
+                alert("Application name cannot be empty");
+            }
+            else if ((configType==='integer' or configType==='double') && !$.trim($.isNumeric(configValue))) {
+                alert("Config Type must be numeric");
             }
             else {
                 var data = {};
-                data["productName"] = productName;
-                data["productPrice"] = productPrice;
+                data["configName"] = configName;
+                data["configType"] = configType;
+                data["configValue"] = configValue;
+                data["configActive"] = configActive;
+                data["configAppName"] = configAppName;
                 $.ajax({
                     type: "POST",
                     contentType: "application/json",
-                    url: "/saveproduct",
+                    url: "/add",
                     data: JSON.stringify(data),
                     dataType: 'json',
                     timeout: 6000,
                     success: function (data) {
-                        if (confirm("Product with Id " + data + " Saved")) {
+                        if (confirm("Configuration with Id " + data + " Saved")) {
                             window.location.reload();
                         }
                     }
@@ -105,6 +156,24 @@
             }
         });
     });
-</script>
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	</script>
 </body>
 </html>
