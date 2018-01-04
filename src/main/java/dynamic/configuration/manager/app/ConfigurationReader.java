@@ -1,16 +1,12 @@
 package dynamic.configuration.manager.app;
 
+import dynamic.configuration.manager.ManagerApplication;
 import dynamic.configuration.manager.entity.ManagerConfiguration;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.ApplicationScope;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Singleton;
-
-@Singleton
 @Service
 public class ConfigurationReader {
 
@@ -29,7 +25,7 @@ public class ConfigurationReader {
     }
 
 
-    public boolean start() {
+    public boolean start(String[] args) {
         try {
             logger.info("Application starting");
             ConfigurableApplicationContext run = SpringApplication.run(ManagerApplication.class, args);

@@ -1,181 +1,162 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Configuration Manager</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
-<style>
-.navigation-order {
-	margin-bottom: 30px;
-}
+    <title>Configuration Manager</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <style>
+        .navigation-order {
+            margin-bottom: 30px;
+        }
 
-.navbar-default {
-	background: #6db33f;
-}
+        .navbar-default {
+            background: #6db33f;
+        }
 
-.navbar-default .navbar-brand {
-	color: white;
-}
+        .navbar-default .navbar-brand {
+            color: white;
+        }
 
-.navbar-default .navbar-nav>li>a {
-	color: white;
-}
-</style>
+        .navbar-default .navbar-nav > li > a {
+            color: white;
+        }
+    </style>
 </head>
 <body>
-	<div class="container">
-		<div class="page-header" id="banner">
-			<div class="row">
-				<h1>Configuration</h1>
-				<div class="col-md-4">
-					<form th:action="@{../add}" th:object="${config}" action="#"
-						method="post">
-						<input type="text" th:field="*{config.name}" class="form-control"
-							placeholder="Name" />
-						<div style="clear: both; display: block; height: 10px;"></div>
-						<input type="text" th:field="*{config.type}" class="form-control"
-							placeholder="Type" />
-						<div style="clear: both; display: block; height: 10px;"></div>
-						<input type="text" th:field="*{config.value}" class="form-control"
-							placeholder="Value" />
-						<div style="clear: both; display: block; height: 10px;"></div>
-						<input type="checkbox" th:field="*{config.active}" class="form-control"
-							placeholder="Active" />
-						<div style="clear: both; display: block; height: 10px;"></div>
-						<input type="checkbox" th:field="*{config.appName}" class="form-control"
-							placeholder="ApplicationName" />
-						<div style="clear: both; display: block; height: 10px;"></div>
-						<input type="submit" class="btn btn-primary" value="Save"></input>
-					</form>
-				</div>
-			</div>
-			<br /> <br />
-			<div class="row">
-				<div class="col-lg-8 col-md-7 col-sm-6">
-					<h1>Configurations</h1>
+<div class="container">
+    <div class="page-header" id="banner">
+        <div class="row">
+            <h1>Configuration</h1>
+            <div class="col-md-4">
+                <form th:action="@{addConfiguration}" method="post" th:object="${config}" action="#">
+                    <input type="text" class="form-control" th:value="*{name}"
+                           placeholder="Name"/>
+                    <div style="clear: both; display: block; height: 10px;"></div>
+                    <select class="form-control" th:value="*{type}">
+                        <option value="*1">Choose</option>
+                        <option th:each="type : ${T(dynamic.configuration.manager.enums.AccessibleType).returnVal()}"
+                                th:value="${type}"
+                                th:text="${type}">
+                        </option>
+                    </select>
+                    <div style="clear: both; display: block; height: 10px;"></div>
+                    <input type="text" class="form-control" th:value="*{value}"
+                           placeholder="Value"/>
+                    <div style="clear: both; display: block; height: 10px;"></div>
+                    <input type="checkbox" class="form-control" th:value="*{active}"
+                           placeholder="Active"/>
+                    <div style="clear: both; display: block; height: 10px;"></div>
+                    <input type="text" class="form-control" th:value="*{appName}"
+                           placeholder="ApplicationName"/>
+                    <div style="clear: both; display: block; height: 10px;"></div>
+                    <input type="submit" class="btn btn-primary" value="Save"></input>
+                </form>
+            </div>
+        </div>
+        <br/> <br/>
+        <div class="row">
+            <div class="col-lg-8 col-md-7 col-sm-6">
+                <h1>Configurations</h1>
 
-					<table class="table table-striped table-hover">
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>Name</th>
-								<th>Type</th>
-								<th>Value</th>
-								<th>IsActive</th>
-								<th>Application Name</th>
-							</tr>
-						</thead>
-						<tbody>
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>IsActive</th>
+                        <th>Application Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-							<tr th:each="configEntity : ${configEntities}">
-								<td th:text="${configEntity.id}"></td>
-								<td th:text="${configEntity.name}"></td>
-								<td th:text="${configEntity.type}"></td>
-								<td th:text="${configEntity.value}"></td>
-								<td th:checkbox="${configEntity.active}"></td>
-								<td th:text="${configEntities.appName}"></td>
-								<td><button type="button" th:action="@{../update}"
-										class="btn btn-success custom-width">Edit</button></td>
-								<td><button type="button"
-										th:action="@{../delete/{id}(id=${configEntity.id}))}"
-										class="btn btn-danger custom-width">Remove</button></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<br />
+                    <tr th:each="cf : ${configEntities}">
+                        <td th:text="${cf.id}"></td>
+                        <td th:text="${cf.name}"></td>
+                        <td th:text="${cf.type}"></td>
+                        <td th:text="${cf.value}"></td>
+                        <td th:checkbox="${cf.active}"></td>
+                        <td th:text="${cf.appName}"></td>
+                        <td>
+                            <button type="button" th:action="@{/update}"
+                                    class="btn btn-success custom-width">Edit
+                            </button>
+                        </td>
+                        <td>
+                            <!--<button type="button"
+                                    th:action="@{/delete/{id}/(id=${cf.id}))}"
+                                    class="btn btn-danger custom-width">Remove
+                            </button>-->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br/>
 
-		</div>
-	</div>
-	<script src="js/jquery.js" type="application/javascript"></script>
-	<script type="application/javascript">
-		
-		
-		
+    </div>
+</div>
+<script src="js/jquery.js" type="application/javascript"></script>
+<script type="application/javascript">
 
-		
-		
-    $(document).ready(function () {
-        $('#btn_submit').on("click", function (e) {
-            e.preventDefault();
-            var configName, configType,configValue,configActive,configAppName;
-            configName = $('#conf_name').val();
-            configType = $('#conf_type').val();
-            configValue = $('#conf_value').val();
-            configActive =$('#conf_value').val();
-            configAppName = $('#conf_appName')
-            if ($.trim(configName) === "") {
-                alert("Config name cannot be empty");
-            }
-            if ($.trim(configType) === "") {
-                alert("Config type must be selected");
-            }
-            if ($.trim(configValue) === "") {
-                alert("Config value cannot be empty");
-            }
-            if ($.trim(configAppName) === "") {
-                alert("Application name cannot be empty");
-            }
-            else if ((configType==='integer' or configType==='double') && !$.trim($.isNumeric(configValue))) {
-                alert("Config Type must be numeric");
-            }
-            else {
-                var data = {};
-                data["configName"] = configName;
-                data["configType"] = configType;
-                data["configValue"] = configValue;
-                data["configActive"] = configActive;
-                data["configAppName"] = configAppName;
-                $.ajax({
-                    type: "POST",
-                    contentType: "application/json",
-                    url: "/add",
-                    data: JSON.stringify(data),
-                    dataType: 'json',
-                    timeout: 6000,
-                    success: function (data) {
-                        if (confirm("Configuration with Id " + data + " Saved")) {
-                            window.location.reload();
-                        }
-                    }
-                });
-            }
-        });
-    });
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	</script>
+    /* $(document).ready(function () {
+         $('#btn_asd').on("click", function (e) {
+             e.preventDefault();
+             var configName, configType, configValue, configActive, configAppName;
+             configName = $('#conf_name').val();
+             configType = $('#conf_type').val();
+             configValue = $('#conf_value').val();
+             configActive = $('#conf_value').val();
+             configAppName = $('#conf_appName')
+             if ($.trim(configName) === "") {
+                 alert("Config name cannot be empty");
+             }
+             if ($.trim(configType) === "") {
+                 alert("Config type must be selected");
+             }
+             if ($.trim(configValue) === "") {
+                 alert("Config value cannot be empty");
+             }
+             if ($.trim(configAppName) === "") {
+                 alert("Application name cannot be empty");
+             }
+             else if ((configType === 'integer' or
+             configType === 'double'
+         ) &&
+             !$.trim($.isNumeric(configValue))
+         )
+             {
+                 alert("Config Type must be numeric");
+             }
+         else
+             {
+                 var data = {};
+                 data["configName"] = configName;
+                 data["configType"] = configType;
+                 data["configValue"] = configValue;
+                 data["configActive"] = configActive;
+                 data["configAppName"] = configAppName;
+                 $.ajax({
+                     type: "POST",
+                     contentType: "application/json",
+                     url: "/add",
+                     data: JSON.stringify(data),
+                     dataType: 'json',
+                     timeout: 6000,
+                     success: function (data) {
+                         if (confirm("Configuration with Id " + data + " Saved")) {
+                             window.location.reload();
+                         }
+                     }
+                 });
+             }
+         });
+     });
+ */
+
+</script>
 </body>
 </html>

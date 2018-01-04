@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ConfigurationService {
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ConfigurationService.class);
@@ -22,15 +24,16 @@ public class ConfigurationService {
     ConfigurationReader configurationReader;
 
     @Cacheable(cacheNames = "getConfigurationByName")
-    public ConfigurationEntity getByName(String name) {
-        return repository.getConfigurationEntityByAppNameAndNameAndActiveIsTrue(configurationReader.getManagerConfiguration().getApplicationName(), name);
-    }
-    @Cacheable(cacheNames = "entities")
-    public List getConfigurations() {
-        return repository.getAllByAppNameAndActiveIsTrue(configurationReader.getManagerConfiguration().getApplicationName());
+    public ConfigurationEntity getByName(String appName, String name) {
+        return repository.getConfigurationEntityByAppNameAndNameAndActiveIsTrue(appName, name);
     }
 
-    @CachePut(value = "entity"  ,key = "#id")
+    @Cacheable(cacheNames = "entities")
+    public List getConfigurations() {
+        return repository.findAll();
+    }
+
+    @CachePut(value = "entity", key = "#id")
     public void add(ConfigurationEntity entity) {
         try {
             repository.save(entity);
@@ -41,7 +44,7 @@ public class ConfigurationService {
         }
     }
 
-    @CachePut(value = "entity"  ,key = "#id")
+    @CachePut(value = "entity", key = "#id")
     public void update(ConfigurationEntity entity) {
         try {
             repository.save(entity);
@@ -62,8 +65,9 @@ public class ConfigurationService {
             throw e;
         }
     }
-	public ConfigurationRepository getRepository() {
-		return repository;
-	}
-    
+
+    public ConfigurationRepository getRepository() {
+        return repository;
+    }
+
 }
