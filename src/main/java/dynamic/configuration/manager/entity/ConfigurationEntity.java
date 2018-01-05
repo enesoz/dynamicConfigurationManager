@@ -6,76 +6,80 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class ConfigurationEntity {
-    @Id
-    private Long id;
-    private String name;
-    private AccessibleType type;
-    private String value;
-    private boolean active;
-    private String appName;
+	@Id
+	private Long id;
+	private String name;
+	private AccessibleType type;
+	private String value;
+	private boolean active;
+	private String appName;
 
-    public ConfigurationEntity() {
-    }
+	protected ConfigurationEntity() {
+	}
 
-    public ConfigurationEntity(String name, AccessibleType type, String value, boolean active, String appName) {
-        this.name = name;
-        this.type = type;
-        this.value = value;
-        this.active = active;
-        this.appName = appName;
-    }
+	protected ConfigurationEntity(String name, AccessibleType type, String value, boolean active, String appName) {
+		this.name = name;
+		this.type = type;
+		this.value = value;
+		this.active = active;
+		this.appName = appName;
+	}
 
-    public static ConfigurationEntity createConfigurationEntity(String name, AccessibleType type, String value,
-                                                                boolean active, String appName) {
-        return new ConfigurationEntity(name, type, value, active, appName);
-    }
+	public static ConfigurationEntity createConfigurationEntity(String name, AccessibleType type, String value,
+			boolean active, String appName) {
+		return new ConfigurationEntity(name, type, value, active, appName);
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public static ConfigurationEntity createEmptyConfigurationEntity() {
+		return new ConfigurationEntity();
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public AccessibleType getType() {
-        return type;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setType(AccessibleType type) {
-        this.type = type;
-    }
+	public AccessibleType getType() {
+		return type;
+	}
 
-    public String getValue() {
-        return value;
-    }
+	public void setType(AccessibleType type) {
+		this.type = type;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public String getValue() {
+		return value;
+	}
 
-    public boolean isActive() {
-        return active;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+	public boolean isActive() {
+		return active;
+	}
 
-    public String getAppName() {
-        return appName;
-    }
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 
-    public void setAppName(String appName) {
-        this.appName = appName;
-    }
+	public String getAppName() {
+		return appName;
+	}
+
+	public void setAppName(String appName) {
+		this.appName = appName;
+	}
 
 }
