@@ -8,9 +8,6 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@ConditionalOnProperty("redis.enabled")
-@EnableCaching
-@EnableScheduling
 public class ManagerApplication {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ManagerApplication.class);
 

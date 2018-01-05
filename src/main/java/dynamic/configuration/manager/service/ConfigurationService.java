@@ -56,7 +56,7 @@ public class ConfigurationService {
     }
 
     @CacheEvict(value = "post-single", key = "#id")
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         try {
             repository.deleteById(id);
             logger.info(id + " entity deleted succesfully");

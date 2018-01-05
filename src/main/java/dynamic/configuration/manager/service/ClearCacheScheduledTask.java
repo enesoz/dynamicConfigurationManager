@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClearCacheScheduledTask {
 
-	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ClearCacheScheduledTask.class);
-	@Value("reader.refreshTimerIntervalInMs")
-	long refreshTimerIntervalInMs;
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ClearCacheScheduledTask.class);
+    @Value("reader.refreshTimerIntervalInMs")
+    String refreshTimerIntervalInMs;
 
-	@Scheduled(fixedRateString = "${reader.refreshTimerIntervalInMs}")
-	@CacheEvict(allEntries = true)
-	public void cacheReset() {
-		logger.info("All Cache Cleared");
-	}
+    @Scheduled(fixedRateString = "${reader.refreshTimerIntervalInMs}")
+    @CacheEvict(allEntries = true)
+    public void cacheReset() {
+        logger.info("All Cache Cleared");
+    }
 
 }

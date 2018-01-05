@@ -29,24 +29,26 @@
             <h1>Configuration</h1>
             <div class="col-md-4">
                 <form th:action="@{addConfiguration}" method="post" th:object="${config}" action="#">
-                    <input type="text" class="form-control" th:value="*{name}"
+                    <input type="text" class="form-control" th:value="*{name}" name="name"
                            placeholder="Name"/>
                     <div style="clear: both; display: block; height: 10px;"></div>
-                    <select class="form-control" th:value="*{type}">
-                        <option value="*1">Choose</option>
+                    <select class="form-control" th:value="*{type}" name="type">
+                        <option value="1">Choose</option>
                         <option th:each="type : ${T(dynamic.configuration.manager.enums.AccessibleType).returnVal()}"
                                 th:value="${type}"
                                 th:text="${type}">
                         </option>
                     </select>
                     <div style="clear: both; display: block; height: 10px;"></div>
-                    <input type="text" class="form-control" th:value="*{value}"
+                    <input type="text" class="form-control" th:value="*{value}" name="value"
                            placeholder="Value"/>
                     <div style="clear: both; display: block; height: 10px;"></div>
-                    <input type="checkbox" class="form-control" th:value="*{active}"
-                           placeholder="Active"/>
+                    <input id="activeId" type="checkbox" class="col-md-1" th:value="*{active}"
+                           name="active"
+                    />
+                    <label for="activeId" class="control-label">Active/Deactive</label>
                     <div style="clear: both; display: block; height: 10px;"></div>
-                    <input type="text" class="form-control" th:value="*{appName}"
+                    <input type="text" class="form-control" th:value="*{appName}" name="appName"
                            placeholder="ApplicationName"/>
                     <div style="clear: both; display: block; height: 10px;"></div>
                     <input type="submit" class="btn btn-primary" value="Save"></input>
@@ -76,18 +78,24 @@
                         <td th:text="${cf.name}"></td>
                         <td th:text="${cf.type}"></td>
                         <td th:text="${cf.value}"></td>
-                        <td th:checkbox="${cf.active}"></td>
+                        <td th:text="${cf.active}"></td>
                         <td th:text="${cf.appName}"></td>
                         <td>
-                            <button type="button" th:action="@{/update}"
-                                    class="btn btn-success custom-width">Edit
-                            </button>
+                            <form th:action="@{edit}" th:method="post" action="#">
+                                <input type="hidden" name="id" id="configId" th:value="${cf.id}"/>
+
+                                <button type="submit" name="entity"
+                                        class="btn btn-success custom-width">Edit
+                                </button>
+                            </form>
                         </td>
                         <td>
-                            <!--<button type="button"
-                                    th:action="@{/delete/{id}/(id=${cf.id}))}"
-                                    class="btn btn-danger custom-width">Remove
-                            </button>-->
+                            <form th:action="@{/delete}" th:method="delete" action="#">
+                                <input type="hidden" name="id" id="delId" th:value="${cf.id}"/>
+                                <button type="submit"
+                                        class="btn btn-danger custom-width">Remove
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     </tbody>

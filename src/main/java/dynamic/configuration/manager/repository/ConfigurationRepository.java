@@ -7,11 +7,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ConfigurationRepository extends MongoRepository<ConfigurationEntity, Long> {
+public interface ConfigurationRepository extends MongoRepository<ConfigurationEntity, String> {
 
     List getAllByAppNameAndActiveIsTrue(String appName);
 
     ConfigurationEntity getConfigurationEntityByAppNameAndNameAndActiveIsTrue(String appName, String name);
-
 
 }
