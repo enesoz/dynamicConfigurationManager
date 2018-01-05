@@ -1,29 +1,42 @@
 package dynamic.configuration.manager.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.annotation.Order;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import dynamic.configuration.manager.ManagerApplication;
 import dynamic.configuration.manager.entity.ConfigurationEntity;
 import dynamic.configuration.manager.enums.AccessibleType;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = ManagerApplication.class)
 public class ConfigurationServiceTest {
 
-	@MockBean
+	@Autowired
 	ConfigurationService service;
 
 	@Before
 	public void setup() {
+		assertNotNull(service);
 		ConfigurationEntity entity = ConfigurationEntity.createConfigurationEntity("deneme", AccessibleType.STRING,
 				"deneme", true, "site1");
 		service.add(entity);
+	}
+
+	@Test
+	@Order(value = 1)
+	public void contexLoads() throws Exception {
+		assertNotNull(service);
 	}
 
 	@Test
@@ -51,8 +64,9 @@ public class ConfigurationServiceTest {
 		ConfigurationEntity entity = ConfigurationEntity.createConfigurationEntity("deneme2", AccessibleType.STRING,
 				"deneme2", true, "site2");
 		service.add(entity);
-		ConfigurationEntity updatedEntity = entity;
-		entity.setName("deneme22");
+		ConfigurationEntity updatedEntity = ConfigurationEntity.createConfigurationEntity(entity.getName(),
+				entity.getType(), entity.getValue(), entity.isActive(), entity.getAppName());
+		updatedEntity.setName("deneme22");
 		service.update(entity);
 		assertNotEquals(entity, updatedEntity);
 	}
