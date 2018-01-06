@@ -36,6 +36,7 @@ public class ConfigurationController {
             System.out.println(bindingResult.getAllErrors());
         }
         entity.setCreatedTime(new Date());
+        entity.setActive(true);
         service.add(entity);
         return "redirect:/";
     }

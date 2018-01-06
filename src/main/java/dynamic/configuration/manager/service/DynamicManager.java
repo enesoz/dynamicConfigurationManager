@@ -2,13 +2,8 @@ package dynamic.configuration.manager.service;
 
 public interface DynamicManager {
 
-	/**
-	 * Return instance of
-	 * 
-	 * @return
-	 */
-	public DynamicManager start();
+     DynamicManager build(String applicationName, String connectionString, int refreshTimerIntervalInMs);
 
-	public <T> T getValue(String key);
+     <T> T getValue(String key);
 
 }

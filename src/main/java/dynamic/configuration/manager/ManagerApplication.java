@@ -1,20 +1,25 @@
 package dynamic.configuration.manager;
 
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication
+
+@Configuration
+@ComponentScan("dynamic.configuration.manager")
+@PropertySource("classpath:application.properties")
+@EnableScheduling
+@EnableMongoRepositories
 public class ManagerApplication {
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ManagerApplication.class);
 
-    public static void main(String[] args) {
-        logger.info("Application starting");
-        SpringApplication.run(ManagerApplication.class, args);
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
-
-
 }

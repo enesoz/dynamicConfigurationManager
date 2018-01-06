@@ -12,64 +12,66 @@ import dynamic.configuration.manager.entity.ManagerConfiguration;
 import dynamic.configuration.manager.enums.AccessibleType;
 import dynamic.configuration.manager.service.ConfigurationService;
 import dynamic.configuration.manager.service.DynamicManager;
+import org.springframework.util.StringUtils;
+
+import javax.annotation.PostConstruct;
+import java.util.Objects;
 
 @Service
-public class ConfigurationReader implements DynamicManager {
+public class ConfigurationReader {
 
-	//For Singleton instance
-	private static ConfigurationReader instance = null;
-	
-	//using for property of run parameters
-	public static ManagerConfiguration managerConfiguration;
-	
-	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ConfigurationReader.class);
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ConfigurationReader.class);
 
-	@Autowired
-	ConfigurationService configurationService;
+    //using for property of run parameters
+    @Autowired
+    ManagerConfiguration managerConfiguration;
 
-	protected ConfigurationReader() {
-		// Exists only to defeat instantiation.
-	}
-
-	protected ConfigurationReader(String applicationName, String connectionString, int refreshTimerIntervalInMs) {
-		this.managerConfiguration = new ManagerConfiguration(applicationName, connectionString,
-				refreshTimerIntervalInMs);
-	}
-
-	protected boolean start(String[] args) {
-		try {
-			logger.info("Application starting");
-			ConfigurableApplicationContext run = SpringApplication.run(ManagerApplication.class, args);
-			return run.isActive();
-		} catch (Exception e) {
-			logger.error("Error Occured", e.fillInStackTrace());
-		}
-		return false;
-	}
-
-	public static DynamicManager build(String applicationName, String connectionString, int refreshTimerIntervalInMs) {
-		if (instance == null) {
-			instance = new ConfigurationReader(applicationName, connectionString, refreshTimerIntervalInMs);
-		}
-		return instance;
-	}
-
-	public ManagerConfiguration getManagerConfiguration() {
-		return managerConfiguration;
-	}
+    @Autowired
+    ConfigurationService configurationService;
 
 
-	@Override
-	public DynamicManager start() {
-		// start(args)
-		return instance;
-	}
+    protected ConfigurationReader() {
+        // Exists only to clear object
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T> T getValue(String key) {
-		ConfigurationEntity entity = configurationService.getByName(managerConfiguration.getApplicationName(), key);
-		return (T) entity.getValue();
-	}
+    protected ConfigurationReader(String applicationName, String connectionString, int refreshTimerIntervalInMs) {
+
+
+    }
+
+
+    public ConfigurationReader build(String applicationName, String connectionString, int refreshTimerIntervalInMs) {
+        ConfigurationReader retVal = new ConfigurationReader();
+
+        managerConfiguration.setApplicationName(applicationName);
+        if (!StringUtils.isEmpty(connectionString)) { // can be empty , work with default settings
+            managerConfiguration.setConnectionString(connectionString);
+        }
+        managerConfiguration.setRefreshTimerIntervalInMs(refreshTimerIntervalInMs);
+        return retVal;
+
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public <T> T getValue(String key) throws Exception {
+        ConfigurationEntity entity = configurationService.getByName(managerConfiguration.getApplicationName(), key);
+        if (entity == null) {
+            throw new Exception("No Result For this");
+        }
+        switch (entity.getType()) {
+            case STRING:
+                return (T) entity.getValue();
+            case DOUBLE:
+                return (T) Double.valueOf(entity.getValue());
+            case BOOLEAN:
+                return (T) Boolean.valueOf(entity.getValue());
+            case INTEGER:
+                return (T) Integer.getInteger(entity.getValue());
+            default:
+                return (T) entity.getValue();
+
+        }
+    }
 
 }

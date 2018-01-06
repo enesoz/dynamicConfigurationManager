@@ -1,6 +1,7 @@
 package dynamic.configuration.manager.entity;
 
 import dynamic.configuration.manager.enums.AccessibleType;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -90,7 +91,6 @@ public class ConfigurationEntity extends BaseEntity {
         int result = 1;
         result = prime * result + (active ? 1231 : 1237);
         result = prime * result + ((appName == null) ? 0 : appName.hashCode());
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         result = prime * result + ((value == null) ? 0 : value.hashCode());
@@ -112,11 +112,6 @@ public class ConfigurationEntity extends BaseEntity {
             if (other.appName != null)
                 return false;
         } else if (!appName.equals(other.appName))
-            return false;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
             return false;
         if (name == null) {
             if (other.name != null)

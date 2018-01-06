@@ -5,6 +5,7 @@ import dynamic.configuration.manager.entity.ConfigurationEntity;
 import dynamic.configuration.manager.repository.ConfigurationRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -20,8 +21,6 @@ public class ConfigurationService {
     @Autowired
     ConfigurationRepository repository;
 
-    @Autowired
-    ConfigurationReader configurationReader;
 
     @Cacheable(cacheNames = "getConfigurationByName")
     public ConfigurationEntity getByName(String appName, String name) {
