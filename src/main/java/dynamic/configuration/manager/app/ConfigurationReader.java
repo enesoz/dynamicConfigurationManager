@@ -39,7 +39,14 @@ public class ConfigurationReader {
 
     }
 
-
+    /**
+     * Paratemer Handler
+     *
+     * @param applicationName
+     * @param connectionString
+     * @param refreshTimerIntervalInMs
+     * @return
+     */
     public ConfigurationReader build(String applicationName, String connectionString, int refreshTimerIntervalInMs) {
         ConfigurationReader retVal = new ConfigurationReader();
 
@@ -52,7 +59,12 @@ public class ConfigurationReader {
 
     }
 
-
+    /**
+     * @param key Configuration Name
+     * @param <T>
+     * @return Configuration value as defined type
+     * @throws Exception
+     */
     @SuppressWarnings("unchecked")
     public <T> T getValue(String key) throws Exception {
         ConfigurationEntity entity = configurationService.getByName(managerConfiguration.getApplicationName(), key);
