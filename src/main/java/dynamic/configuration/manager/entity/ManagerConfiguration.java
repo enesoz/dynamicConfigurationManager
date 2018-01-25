@@ -1,13 +1,14 @@
 package dynamic.configuration.manager.entity;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
-@Controller
+@Component
 @ConfigurationProperties(prefix = "reader")
 public class ManagerConfiguration {
 

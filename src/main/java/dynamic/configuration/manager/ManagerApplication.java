@@ -13,7 +13,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
 @ComponentScan("dynamic.configuration.manager")
-@PropertySource("classpath:application.properties")
 @EnableScheduling
 @EnableMongoRepositories
 public class ManagerApplication {
